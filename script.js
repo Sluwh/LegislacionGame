@@ -169,7 +169,10 @@ let estado = {
     categoria: null,
     preguntaActual: 0,
     puntaje: 0,
-    preguntasActuales: []
+    preguntasActuales: [],
+    tiempoInicio: null,
+    intervalo: null,
+    tiempoTranscurrido: 0
 };
 
 // Elementos del DOM
@@ -191,6 +194,8 @@ const mensajeFinal = document.getElementById('mensajeFinal');
 const btnJugarOtraVez = document.getElementById('btnJugarOtraVez');
 const btnCambiarCategoria = document.getElementById('btnCambiarCategoria');
 const btnVolverMenu = document.getElementById('btnVolverMenu');
+const tiempoActual = document.getElementById('tiempoActual');
+const tiempoFinal = document.getElementById('tiempoFinal');
 
 // Función para barajar array (Fisher-Yates shuffle)
 function barajarArray(array) {
@@ -202,15 +207,47 @@ function barajarArray(array) {
     return nuevoArray;
 }
 
+// Función para formatear tiempo (MM:SS)
+function formatearTiempo(segundos) {
+    const mins = Math.floor(segundos / 60);
+    const secs = segundos % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Función para actualizar el timer
+function actualizarTimer() {
+    estado.tiempoTranscurrido++;
+    if (tiempoActual) {
+        tiempoActual.textContent = formatearTiempo(estado.tiempoTranscurrido);
+    }
+}
+
 // Inicializar juego
 function iniciarJuego(categoria) {
     estado.categoria = categoria;
     estado.preguntaActual = 0;
     estado.puntaje = 0;
+    estado.tiempoTranscurrido = 0;
+    
+    // Detener timer anterior si existe
+    if (estado.intervalo) {
+        clearInterval(estado.intervalo);
+        estado.intervalo = null;
+    }
+    
     // Barajar las preguntas antes de empezar
     estado.preguntasActuales = barajarArray(preguntas[categoria]);
     
+    // Mostrar pantalla primero para que el elemento exista
     mostrarPantalla('juego');
+    
+    // Iniciar timer después de mostrar la pantalla
+    if (tiempoActual) {
+        tiempoActual.textContent = '00:00';
+    }
+    estado.tiempoInicio = Date.now();
+    estado.intervalo = setInterval(actualizarTimer, 1000);
+    
     mostrarPregunta();
 }
 
@@ -323,12 +360,19 @@ function mostrarResultados() {
     const total = estado.preguntasActuales.length;
     const porcentaje = (estado.puntaje / total) * 100;
     
+    // Detener timer
+    if (estado.intervalo) {
+        clearInterval(estado.intervalo);
+        estado.intervalo = null;
+    }
+    
     // Actualizar progreso final
     progresoFill.style.width = '100%';
     
     // Mostrar estadísticas
     puntajeFinal.textContent = estado.puntaje;
     porcentajeFinal.textContent = porcentaje.toFixed(1) + '%';
+    tiempoFinal.textContent = formatearTiempo(estado.tiempoTranscurrido);
     
     // Mostrar mensaje final
     let mensaje = '';
@@ -397,6 +441,11 @@ setupButton(btnCambiarCategoria, () => {
 
 setupButton(btnVolverMenu, () => {
     if (confirm('¿Estás seguro de que quieres volver al menú? Se perderá el progreso actual.')) {
+        // Detener timer si está activo
+        if (estado.intervalo) {
+            clearInterval(estado.intervalo);
+            estado.intervalo = null;
+        }
         mostrarPantalla('bienvenida');
     }
 });

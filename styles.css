@@ -345,6 +345,12 @@ body::before {
     font-weight: 600;
 }
 
+.timer-actual {
+    font-size: 1.1rem;
+    color: var(--color-secundario);
+    font-weight: 600;
+}
+
 .pregunta-container {
     margin-bottom: 30px;
 }
@@ -572,6 +578,7 @@ body::before {
     justify-content: space-around;
     margin-bottom: 40px;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .stat {
@@ -722,6 +729,12 @@ body::before {
         order: 0;
     }
     
+    .timer-actual {
+        font-size: 1.1rem;
+        width: auto;
+        order: 0;
+    }
+    
     .resultados-container {
         min-height: 60vh;
         display: flex;
@@ -862,6 +875,12 @@ body::before {
         font-size: 1rem;
         width: 100%;
         order: 3;
+    }
+    
+    .timer-actual {
+        font-size: 1rem;
+        width: 100%;
+        order: 4;
     }
     
     .pregunta-card {
