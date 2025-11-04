@@ -190,13 +190,25 @@ const porcentajeFinal = document.getElementById('porcentajeFinal');
 const mensajeFinal = document.getElementById('mensajeFinal');
 const btnJugarOtraVez = document.getElementById('btnJugarOtraVez');
 const btnCambiarCategoria = document.getElementById('btnCambiarCategoria');
+const btnVolverMenu = document.getElementById('btnVolverMenu');
+
+// Función para barajar array (Fisher-Yates shuffle)
+function barajarArray(array) {
+    const nuevoArray = [...array];
+    for (let i = nuevoArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [nuevoArray[i], nuevoArray[j]] = [nuevoArray[j], nuevoArray[i]];
+    }
+    return nuevoArray;
+}
 
 // Inicializar juego
 function iniciarJuego(categoria) {
     estado.categoria = categoria;
     estado.preguntaActual = 0;
     estado.puntaje = 0;
-    estado.preguntasActuales = [...preguntas[categoria]];
+    // Barajar las preguntas antes de empezar
+    estado.preguntasActuales = barajarArray(preguntas[categoria]);
     
     mostrarPantalla('juego');
     mostrarPregunta();
@@ -222,7 +234,9 @@ function mostrarPregunta() {
     pregunta.opciones.forEach((opcion, index) => {
         const btn = document.createElement('button');
         btn.className = 'opcion-btn';
-        btn.textContent = opcion;
+        const span = document.createElement('span');
+        span.textContent = opcion;
+        btn.appendChild(span);
         // Usar touchstart para mejor respuesta en móvil
         btn.addEventListener('touchstart', (e) => {
             e.preventDefault();
@@ -281,10 +295,10 @@ function mostrarFeedback(esCorrecta) {
     
     if (esCorrecta) {
         feedbackContent.className = 'feedback-content correcto';
-        feedbackTexto.textContent = '✓ ¡CORRECTO! ✓';
+        feedbackTexto.textContent = 'CORRECTO';
     } else {
         feedbackContent.className = 'feedback-content incorrecto';
-        feedbackTexto.textContent = '✗ INCORRECTO ✗';
+        feedbackTexto.textContent = 'INCORRECTO';
     }
 }
 
@@ -379,5 +393,11 @@ setupButton(btnJugarOtraVez, () => {
 
 setupButton(btnCambiarCategoria, () => {
     mostrarPantalla('bienvenida');
+});
+
+setupButton(btnVolverMenu, () => {
+    if (confirm('¿Estás seguro de que quieres volver al menú? Se perderá el progreso actual.')) {
+        mostrarPantalla('bienvenida');
+    }
 });
 

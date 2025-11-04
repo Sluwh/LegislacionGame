@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Preguntados - Legislación y Derecho</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,6 +17,10 @@
                 <div class="logo">
                     <h1 class="titulo-principal">📚 PREGUNTADOS</h1>
                     <p class="subtitulo">Legislación y Derecho</p>
+                </div>
+                <div class="creditos">
+                    <p class="creditos-texto">Proyecto creado por:</p>
+                    <p class="creditos-nombres">Emiliano Albarenga, Thiago Pérez y Marcel Matiaude</p>
                 </div>
                 <div class="bienvenida-texto">
                     <p>¡Bienvenido al juego de preguntas sobre legislación y derecho!</p>
@@ -44,6 +49,10 @@
         <!-- Pantalla de Juego -->
         <div id="pantallaJuego" class="pantalla">
             <div class="juego-header">
+                <button id="btnVolverMenu" class="btn-volver-menu" title="Volver al menú principal">
+                    <span class="icono-volver">←</span>
+                    <span class="texto-volver">Menú</span>
+                </button>
                 <div class="categoria-actual">
                     <span id="categoriaNombre"></span>
                 </div>
