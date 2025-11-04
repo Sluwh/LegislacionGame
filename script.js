@@ -194,7 +194,6 @@ const mensajeFinal = document.getElementById('mensajeFinal');
 const btnJugarOtraVez = document.getElementById('btnJugarOtraVez');
 const btnCambiarCategoria = document.getElementById('btnCambiarCategoria');
 const btnVolverMenu = document.getElementById('btnVolverMenu');
-const tiempoActual = document.getElementById('tiempoActual');
 const tiempoFinal = document.getElementById('tiempoFinal');
 
 // Función para barajar array (Fisher-Yates shuffle)
@@ -217,6 +216,7 @@ function formatearTiempo(segundos) {
 // Función para actualizar el timer
 function actualizarTimer() {
     estado.tiempoTranscurrido++;
+    const tiempoActual = document.getElementById('tiempoActual');
     if (tiempoActual) {
         tiempoActual.textContent = formatearTiempo(estado.tiempoTranscurrido);
     }
@@ -242,6 +242,7 @@ function iniciarJuego(categoria) {
     mostrarPantalla('juego');
     
     // Iniciar timer después de mostrar la pantalla
+    const tiempoActual = document.getElementById('tiempoActual');
     if (tiempoActual) {
         tiempoActual.textContent = '00:00';
     }
@@ -424,29 +425,60 @@ categoriaBtns.forEach(btn => {
 
 // Event listeners optimizados para móvil
 const setupButton = (button, callback) => {
+    if (!button) return;
+    
+    let touchHandled = false;
+    
     button.addEventListener('touchstart', (e) => {
+        touchHandled = true;
         e.preventDefault();
         callback();
+        // Reset después de un tiempo
+        setTimeout(() => { touchHandled = false; }, 300);
     }, { passive: false });
-    button.addEventListener('click', callback);
+    
+    button.addEventListener('click', (e) => {
+        if (!touchHandled) {
+            callback();
+        }
+        touchHandled = false;
+    });
 };
 
-setupButton(btnJugarOtraVez, () => {
-    iniciarJuego(estado.categoria);
-});
+if (btnJugarOtraVez) {
+    setupButton(btnJugarOtraVez, () => {
+        iniciarJuego(estado.categoria);
+    });
+}
 
-setupButton(btnCambiarCategoria, () => {
-    mostrarPantalla('bienvenida');
-});
-
-setupButton(btnVolverMenu, () => {
-    if (confirm('¿Estás seguro de que quieres volver al menú? Se perderá el progreso actual.')) {
-        // Detener timer si está activo
-        if (estado.intervalo) {
-            clearInterval(estado.intervalo);
-            estado.intervalo = null;
-        }
+if (btnCambiarCategoria) {
+    setupButton(btnCambiarCategoria, () => {
         mostrarPantalla('bienvenida');
-    }
-});
+    });
+}
+
+if (btnVolverMenu) {
+    setupButton(btnVolverMenu, () => {
+        if (confirm('¿Estás seguro de que quieres volver al menú? Se perderá el progreso actual.')) {
+            // Detener timer si está activo
+            if (estado.intervalo) {
+                clearInterval(estado.intervalo);
+                estado.intervalo = null;
+            }
+            mostrarPantalla('bienvenida');
+        }
+    });
+    
+    // También agregar listener directo como respaldo
+    btnVolverMenu.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('¿Estás seguro de que quieres volver al menú? Se perderá el progreso actual.')) {
+            if (estado.intervalo) {
+                clearInterval(estado.intervalo);
+                estado.intervalo = null;
+            }
+            mostrarPantalla('bienvenida');
+        }
+    });
+}
 
