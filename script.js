@@ -215,10 +215,14 @@ function formatearTiempo(segundos) {
 
 // Función para actualizar el timer
 function actualizarTimer() {
+    if (!estado.intervalo) return; // Si no hay intervalo, no actualizar
+    
     estado.tiempoTranscurrido++;
-    const tiempoActual = document.getElementById('tiempoActual');
-    if (tiempoActual) {
-        tiempoActual.textContent = formatearTiempo(estado.tiempoTranscurrido);
+    const tiempoActualEl = document.getElementById('tiempoActual');
+    if (tiempoActualEl) {
+        tiempoActualEl.textContent = formatearTiempo(estado.tiempoTranscurrido);
+    } else {
+        console.warn('Elemento tiempoActual no encontrado');
     }
 }
 
@@ -241,13 +245,21 @@ function iniciarJuego(categoria) {
     // Mostrar pantalla primero para que el elemento exista
     mostrarPantalla('juego');
     
-    // Iniciar timer después de mostrar la pantalla
-    const tiempoActual = document.getElementById('tiempoActual');
-    if (tiempoActual) {
-        tiempoActual.textContent = '00:00';
-    }
-    estado.tiempoInicio = Date.now();
-    estado.intervalo = setInterval(actualizarTimer, 1000);
+    // Pequeño delay para asegurar que el DOM esté renderizado
+    setTimeout(() => {
+        // Iniciar timer después de mostrar la pantalla
+        const tiempoActualEl = document.getElementById('tiempoActual');
+        if (tiempoActualEl) {
+            tiempoActualEl.textContent = '00:00';
+            estado.tiempoInicio = Date.now();
+            estado.intervalo = setInterval(() => {
+                actualizarTimer();
+            }, 1000);
+            console.log('Timer iniciado');
+        } else {
+            console.error('No se pudo encontrar el elemento tiempoActual');
+        }
+    }, 100);
     
     mostrarPregunta();
 }
