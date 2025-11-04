@@ -1,0 +1,20 @@
+# Archivos Java compilados
+*.class
+
+# Archivos Java originales (opcional, si quieres mantenerlos puedes quitar esta línea)
+# Preguntados.java
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+

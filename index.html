@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Preguntados - Legislación y Derecho</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de Bienvenida -->
+        <div id="pantallaBienvenida" class="pantalla activa">
+            <div class="contenido-bienvenida">
+                <div class="logo">
+                    <h1 class="titulo-principal">📚 PREGUNTADOS</h1>
+                    <p class="subtitulo">Legislación y Derecho</p>
+                </div>
+                <div class="bienvenida-texto">
+                    <p>¡Bienvenido al juego de preguntas sobre legislación y derecho!</p>
+                    <p>Selecciona una categoría para comenzar</p>
+                </div>
+                <div class="categorias">
+                    <button class="categoria-btn" data-categoria="civil">
+                        <span class="icono">⚖️</span>
+                        <span class="categoria-titulo">Derecho Civil</span>
+                        <span class="categoria-desc">5 preguntas</span>
+                    </button>
+                    <button class="categoria-btn" data-categoria="laboral">
+                        <span class="icono">💼</span>
+                        <span class="categoria-titulo">Derecho Laboral</span>
+                        <span class="categoria-desc">5 preguntas</span>
+                    </button>
+                    <button class="categoria-btn" data-categoria="seguridad">
+                        <span class="icono">🛡️</span>
+                        <span class="categoria-titulo">Seguridad Social</span>
+                        <span class="categoria-desc">5 preguntas</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Juego -->
+        <div id="pantallaJuego" class="pantalla">
+            <div class="juego-header">
+                <div class="categoria-actual">
+                    <span id="categoriaNombre"></span>
+                </div>
+                <div class="progreso">
+                    <div class="progreso-bar">
+                        <div id="progresoFill" class="progreso-fill"></div>
+                    </div>
+                    <span id="contadorPregunta" class="contador">Pregunta 1 de 5</span>
+                </div>
+                <div class="puntaje-actual">
+                    <span>Puntos: <strong id="puntajeActual">0</strong></span>
+                </div>
+            </div>
+
+            <div class="pregunta-container">
+                <div class="pregunta-card">
+                    <h2 id="preguntaTexto" class="pregunta-texto"></h2>
+                    <div id="opcionesContainer" class="opciones-container">
+                        <!-- Las opciones se generan dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="feedback" class="feedback oculto">
+                <div class="feedback-content">
+                    <span id="feedbackTexto" class="feedback-texto"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="pantallaResultados" class="pantalla">
+            <div class="resultados-container">
+                <div class="resultados-card">
+                    <h2 class="resultados-titulo">🎉 ¡Juego Terminado!</h2>
+                    <div class="resultados-stats">
+                        <div class="stat">
+                            <div class="stat-valor" id="puntajeFinal">0</div>
+                            <div class="stat-label">de 5 correctas</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-valor" id="porcentajeFinal">0%</div>
+                            <div class="stat-label">porcentaje</div>
+                        </div>
+                    </div>
+                    <div id="mensajeFinal" class="mensaje-final"></div>
+                    <div class="resultados-botones">
+                        <button id="btnJugarOtraVez" class="btn-primario">Jugar Otra Vez</button>
+                        <button id="btnCambiarCategoria" class="btn-secundario">Cambiar Categoría</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
